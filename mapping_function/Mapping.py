@@ -11,35 +11,41 @@ longitude = df['location-long']
 latitude = df['location-lat']
 id = df['tag-local-identifier']
 
+def Mapping(df):
 
-# import world map shp file
-world_map = gpd.read_file('/Users/abestroka/Bio_Modeling_and_Simulation/02-712-Bird-Migration/mapping_function/ne_50m_land/ne_50m_land.shp')
+    longitude = df['location-long']
+    latitude = df['location-lat']
+    id = df['tag-local-identifier']
 
-#initialize coordinate system
-crs = {'init':'epsg:4326'}
+    # import world map shp file
+    world_map = gpd.read_file('/Users/abestroka/Bio_Modeling_and_Simulation/02-712-Bird-Migration/mapping_function/ne_50m_land/ne_50m_land.shp')
+
+    #initialize coordinate system
+    crs = {'init':'epsg:4326'}
 
 
-# make xy coordinates single feature
-coordinates = [Point(xy) for xy in zip(df['location-long'], df['location-lat'])]
+    # make xy coordinates single feature
+    coordinates = [Point(xy) for xy in zip(df['location-long'], df['location-lat'])]
 
-# create geo dataframe
-geo_df = gpd.GeoDataFrame(df, crs = crs, geometry = coordinates)
+    # create geo dataframe
+    geo_df = gpd.GeoDataFrame(df, crs = crs, geometry = coordinates)
 
-# Create plot
+    # Create plot
 
-fig, ax = plt.subplots(figsize=(15,15))
+    fig, ax = plt.subplots(figsize=(15,15))
 
-# Add map file
-world_map.plot(ax=ax, alpha=0.4,color='grey')
+    # Add map file
+    world_map.plot(ax=ax, alpha=0.4,color='grey')
 
-geo_df.plot(column='tag-local-identifier', ax=ax, alpha=0.5, legend=True, markersize=10, categorical=True)
+    geo_df.plot(column='tag-local-identifier', ax=ax, alpha=0.5, legend=False, markersize=2, categorical=True)
 
-plt.title('Bird Migration Patterns')
+    plt.title('Bird Migration Patterns')
 
-# Lat/Long Map Boundaries
-plt.xlim(min(longitude)-.5, max(longitude)+.5)
-plt.ylim(min(latitude)-.5, max(latitude)+.5)
+    # Lat/Long Map Boundaries
+    plt.xlim(min(longitude)-.5, max(longitude)+.5)
+    plt.ylim(min(latitude)-.5, max(latitude)+.5)
 
-plt.show()
+    plt.show()
         
 
+Mapping(df)
